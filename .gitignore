@@ -1,0 +1,54 @@
+# Python specific
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.log
+
+# FastAPI specific
+*.env
+*.sqlite3
+*.db
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Docker specific
+docker-compose.override.yml
+docker-compose.yml
+Dockerfile
+.dockerignore
+
+# Editor specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+.coverage
+pytest_cache/
+htmlcov/
+.tox/
+.cache/
+
+# Migrations
+migrations/
+alembic/versions/*
+
+# Static and media files
+static/
+media/
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+
+# macOS specific
+.DS_Store
+.idea
