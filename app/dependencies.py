@@ -3,7 +3,6 @@ from jose import jwt
 
 from fastapi import Depends, HTTPException, status
 
-from app.schemas.response import UserResponse
 from config.database import get_db
 from app.models.models import User
 from sqlalchemy.orm import Session

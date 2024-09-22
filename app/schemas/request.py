@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from typing import Optional
-from datetime import date
+from datetime import date, time
+
 
 class UserLoginRequest(BaseModel):
     email:EmailStr
@@ -28,12 +29,12 @@ class EventCreateRequest(BaseModel):
     description: str
     max_participants: int
     location: str
-    date: str
-    time: str
+    date: date
+    time: time
 
 
 class TicketCreateRequest(BaseModel):
-    expiration_date: str
+    expiration_date: date
     price:float
 
 

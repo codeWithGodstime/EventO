@@ -1,4 +1,4 @@
-from datetime import datetime, date
+from datetime import datetime, date, time
 
 from pydantic import BaseModel, ConfigDict
 
@@ -26,13 +26,13 @@ class EventResponse(BaseResponse):
     max_participants: int
     location: str
     date: date
-    time: str
+    time: time
     organiser: UserResponse
 
 
 class TicketResponse(BaseResponse):
-    expiration_date:str
-    price:float
+    expiration_date:date
+    price: float
     is_available:bool
     # event: EventResponse
 

@@ -13,12 +13,16 @@ ticketing_router = APIRouter(
 )
 
 @ticketing_router.post("/{event_id}/tickets", response_model=TicketResponse)
-def create_ticket_for_event(event_id:str, request:TicketCreateRequest, current_user:User = Depends(get_current_user), session: Session = Depends(get_db)):
+def create_ticket_for_event(event_id:str, request:TicketCreateRequest, current_user: User = Depends(get_current_user), session: Session = Depends(get_db)):
     """create tickets for an event by the organizers"""
     event = session.query(Event).filter(Event.uid == event_id).first()
 
     if not event:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Event does not exist")
+    
+    # check if the expiration_date if after the event
+    if request.expiration_date > event.date:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Expiration date must be less than the event date")
 
     # create a ticket
     ticket = Tickets(

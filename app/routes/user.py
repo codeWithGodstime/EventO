@@ -3,6 +3,7 @@ from datetime import timedelta
 from fastapi import APIRouter, HTTPException, status
 from fastapi.params import Depends
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 
 from app.dependencies import get_current_user
 from app.schemas.request import UserRegisterRequest, UserLoginRequest
@@ -20,14 +21,27 @@ auth_router = APIRouter(
     # dependencies=[Depends(get_db)]
 )
 
-@auth_router.post("/register", response_model=UserResponse)
+@auth_router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 def create_account(data: UserRegisterRequest, session: Session = Depends(get_db)):
+
+    if session.query(User).filter(User.username == data.username).first():
+        raise HTTPException(
+            status_code=400,
+            detail="Username already exists"
+        )
+
+    if session.query(User).filter(User.email == data.email).first():
+        raise HTTPException(
+            status_code=400,
+            detail="Email already exists"
+        )
+
     hashed_password = hash_password(data.password)
     user = User(username = data.username, email=data.email, password=hashed_password)
     session.add(user)
+
     session.commit()
     session.refresh(user)
-
     return user
 
 @auth_router.post("/token", response_model=UserLoginReponse)
